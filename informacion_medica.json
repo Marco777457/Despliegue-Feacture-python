@@ -1,0 +1,15 @@
+{
+    "marco": {
+        "Edad": "25",
+        "Enfermedades": [
+            "anemia"
+        ],
+        "Medicamentos": [
+            "paracetamol"
+        ],
+        "Contacto de Emergencia": {
+            "Nombre": "921318579",
+            "Teléfono": "965445345"
+        }
+    }
+}
