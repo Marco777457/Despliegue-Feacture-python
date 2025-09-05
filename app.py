@@ -24,8 +24,8 @@ def index():
 def registrar():
     nombre = request.form["nombre"]
     edad = request.form["edad"]
-    enfermedades = [e.strip() for e in request.form["enfermedades"].split(",") if e.strip()]
-    medicamentos = [m.strip() for m in request.form["medicamentos"].split(",") if m.strip()]
+    enfermedades = request.form["enfermedades"].split(",")
+    medicamentos = request.form["medicamentos"].split(",")
     contacto_nombre = request.form["contacto_nombre"]
     contacto_tel = request.form["contacto_tel"]
 
