@@ -1,19 +1,16 @@
 from flask import Flask, render_template, request, redirect, url_for
-import json
-import os
+import json, os
 
 app = Flask(__name__)
 
 DB_FILE = "informacion_medica.json"
 
-# Cargar datos
 def cargar_datos():
     if os.path.exists(DB_FILE):
         with open(DB_FILE, "r", encoding="utf-8") as f:
             return json.load(f)
     return {}
 
-# Guardar datos
 def guardar_datos(datos):
     with open(DB_FILE, "w", encoding="utf-8") as f:
         json.dump(datos, f, indent=4, ensure_ascii=False)
@@ -51,7 +48,4 @@ def consultar_paciente(nombre):
     paciente = datos.get(nombre, None)
     return render_template("detalle.html", nombre=nombre, paciente=paciente)
 
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+# Solo define el app, no pongas app.run() porque Render usa gunicorn

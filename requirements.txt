@@ -1,5 +1,2 @@
 flask
 gunicorn
-jinja2
-torch
-ultralytics
