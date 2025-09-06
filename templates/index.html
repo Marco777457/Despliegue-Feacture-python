@@ -5,64 +5,85 @@
   <title>Gestión Médica - Personas 3era Edad</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gradient-to-br from-blue-50 to-blue-100 min-h-screen">
+<body class="bg-gradient-to-br from-blue-50 to-blue-100 min-h-screen flex flex-col">
 
   <!-- Header -->
-  <header class="bg-blue-700 text-white shadow-lg">
+  <header class="bg-blue-700 text-white shadow-lg fixed w-full z-10">
     <div class="max-w-6xl mx-auto flex justify-between items-center p-4">
-      <h1 class="text-2xl font-bold">👩‍⚕️ Gestión Médica</h1>
-      <nav class="space-x-4">
+      <h1 class="text-xl md:text-2xl font-bold flex items-center gap-2">👩‍⚕️ <span>Gestión Médica</span></h1>
+      <nav class="hidden sm:flex space-x-6 text-sm md:text-base">
         <a href="/" class="hover:underline">Inicio</a>
         <a href="#formulario" class="hover:underline">Registrar</a>
       </nav>
+      <!-- Botón menú móvil -->
+      <button id="menu-btn" class="sm:hidden focus:outline-none text-white">
+        ☰
+      </button>
+    </div>
+    <!-- Menú móvil -->
+    <div id="menu" class="hidden sm:hidden flex flex-col bg-blue-600 px-4 pb-4">
+      <a href="/" class="py-2 border-b border-blue-500">Inicio</a>
+      <a href="#formulario" class="py-2">Registrar</a>
     </div>
   </header>
 
   <!-- Contenido principal -->
-  <main class="max-w-6xl mx-auto p-6">
+  <main class="max-w-6xl mx-auto p-6 w-full flex-1 pt-24">
 
     <!-- Formulario -->
-    <section id="formulario" class="bg-white shadow-md rounded-lg p-6 mb-10">
-      <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">➕ Registrar Paciente</h2>
+    <section id="formulario" class="bg-white shadow-lg rounded-xl p-6 mb-12 border border-gray-100">
+      <h2 class="text-xl md:text-2xl font-semibold mb-6 flex items-center gap-2 text-blue-700">➕ Registrar Paciente</h2>
       <form action="/registrar" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <input class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-400" type="text" name="nombre" placeholder="Nombre completo" required>
-        <input class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-400" type="number" name="edad" placeholder="Edad" required>
-        <input class="p-3 border rounded-lg col-span-2" type="text" name="enfermedades" placeholder="Enfermedades (separadas por coma)">
-        <input class="p-3 border rounded-lg col-span-2" type="text" name="medicamentos" placeholder="Medicamentos (separados por coma)">
-        <input class="p-3 border rounded-lg" type="text" name="contacto_nombre" placeholder="Nombre de contacto">
-        <input class="p-3 border rounded-lg" type="text" name="contacto_tel" placeholder="Teléfono de contacto">
-        <button class="bg-blue-600 text-white py-2 px-4 rounded-lg col-span-2 hover:bg-blue-700 transition">Registrar Paciente</button>
+        <input class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 w-full" type="text" name="nombre" placeholder="Nombre completo" required>
+        <input class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 w-full" type="number" name="edad" placeholder="Edad" required>
+        <input class="p-3 border rounded-lg col-span-1 md:col-span-2 focus:ring-2 focus:ring-blue-400" type="text" name="enfermedades" placeholder="Enfermedades (separadas por coma)">
+        <input class="p-3 border rounded-lg col-span-1 md:col-span-2 focus:ring-2 focus:ring-blue-400" type="text" name="medicamentos" placeholder="Medicamentos (separados por coma)">
+        <input class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-400" type="text" name="contacto_nombre" placeholder="Nombre de contacto">
+        <input class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-400" type="text" name="contacto_tel" placeholder="Teléfono de contacto">
+        <button class="bg-blue-600 text-white py-3 px-6 rounded-lg col-span-1 md:col-span-2 hover:bg-blue-700 transition-all transform hover:scale-105 shadow-md">Registrar Paciente</button>
       </form>
     </section>
 
     <!-- Lista de pacientes -->
     <section>
-      <h2 class="text-xl font-semibold mb-4">👨‍⚕️ Pacientes Registrados</h2>
+      <h2 class="text-xl md:text-2xl font-semibold mb-6 text-blue-700">👨‍⚕️ Pacientes Registrados</h2>
       
       <!-- Buscador -->
-      <input type="text" placeholder="Buscar paciente..." class="w-full mb-6 p-3 border rounded-lg focus:ring-2 focus:ring-blue-400">
+      <div class="relative mb-6">
+        <input type="text" placeholder="Buscar paciente..." class="w-full p-3 pl-10 border rounded-lg focus:ring-2 focus:ring-blue-400">
+        <span class="absolute left-3 top-3.5 text-gray-400">🔍</span>
+      </div>
 
-      <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {% for nombre, paciente in pacientes.items() %}
-          <a href="{{ url_for('consultar_paciente', nombre=nombre) }}" class="block bg-white shadow-md rounded-lg p-5 hover:shadow-xl transition">
-            <div class="flex justify-between items-center mb-2">
+          <a href="{{ url_for('consultar_paciente', nombre=nombre) }}" class="block bg-white border border-gray-100 shadow-sm rounded-xl p-5 hover:shadow-xl hover:-translate-y-1 transform transition-all">
+            <div class="flex justify-between items-center mb-3">
               <h3 class="text-lg font-bold text-blue-700">{{ nombre }}</h3>
-              <span class="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded">Edad: {{ paciente['Edad'] }}</span>
+              <span class="text-xs md:text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Edad: {{ paciente['Edad'] }}</span>
             </div>
-            <p class="text-gray-600 text-sm"><strong>Enfermedades:</strong> {{ paciente['Enfermedades'] | join(', ') }}</p>
+            <p class="text-gray-600 text-sm mb-1"><strong>Enfermedades:</strong> {{ paciente['Enfermedades'] | join(', ') }}</p>
             <p class="text-gray-600 text-sm"><strong>Medicamentos:</strong> {{ paciente['Medicamentos'] | join(', ') }}</p>
           </a>
         {% else %}
-          <p class="text-gray-500">⚠ No hay pacientes registrados aún.</p>
+          <p class="text-gray-500 text-center col-span-full">⚠ No hay pacientes registrados aún.</p>
         {% endfor %}
       </div>
     </section>
   </main>
 
   <!-- Footer -->
-  <footer class="text-center py-4 bg-blue-700 text-white mt-10">
+  <footer class="text-center py-6 bg-blue-700 text-white mt-10 shadow-inner">
     © 2025 Gestión Médica - Proyecto prototipo
   </footer>
+
+  <!-- Script menú móvil -->
+  <script>
+    const menuBtn = document.getElementById("menu-btn");
+    const menu = document.getElementById("menu");
+    menuBtn.addEventListener("click", () => {
+      menu.classList.toggle("hidden");
+    });
+  </script>
 
 </body>
 </html>
