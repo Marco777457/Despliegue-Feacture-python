@@ -51,9 +51,10 @@ def index():
     datos = cargar_datos()
     return render_template("index.html", pacientes=datos)
 
-@app.route("/registrar", methods=["POST"])
 def registrar():
     nombre = request.form["nombre"]
+
+    datos = cargar_datos()
     datos[nombre] = {
         "Edad": request.form["edad"],
         "Enfermedades": request.form.get("enfermedades", "").split(",") if request.form.get("enfermedades") else [],
@@ -66,6 +67,8 @@ def registrar():
         },
         "Descripcion": request.form.get("descripcion", "")
     }
+
+    guardar_datos(datos)
     return redirect(url_for("index"))
 
 
