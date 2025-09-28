@@ -79,6 +79,11 @@ def consultar_paciente(nombre):
     paciente = datos.get(nombre, None)
     return render_template("detalle.html", nombre=nombre, paciente=paciente)
 
+@app.route("/pacientes")
+def ver_pacientes():
+    datos = cargar_datos()
+    return render_template("pacientes.html", pacientes=datos)
+
 # ---------- NUEVOS ENDPOINTS API (JSON) ----------
 # 1) Listar pacientes (solo nombres o con info completa si quieres)
 @app.route("/api/pacientes", methods=["GET"])
