@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Gestión Médica{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-blue-100 min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-blue-700 text-white shadow-lg fixed w-full z-10">
+    <div class="max-w-6xl mx-auto flex justify-between items-center p-4">
+      <h1 class="text-xl md:text-2xl font-bold flex items-center gap-2">👩‍⚕️ <span>Gestión Médica</span></h1>
+      <nav class="hidden sm:flex space-x-6 text-sm md:text-base">
+        <a href="{{ url_for('index') }}" class="hover:underline">Inicio</a>
+        <a href="{{ url_for('index') }}#formulario" class="hover:underline">Registrar</a>
+        <a href="{{ url_for('ver_pacientes') }}" class="hover:underline">Pacientes</a>
+      </nav>
+      <button id="menu-btn" class="sm:hidden focus:outline-none text-white">☰</button>
+    </div>
+    <div id="menu" class="hidden sm:hidden flex flex-col bg-blue-600 px-4 pb-4">
+      <a href="{{ url_for('index') }}" class="py-2 border-b border-blue-500">Inicio</a>
+      <a href="{{ url_for('index') }}#formulario" class="py-2 border-b border-blue-500">Registrar</a>
+      <a href="{{ url_for('ver_pacientes') }}" class="py-2">Pacientes</a>
+    </div>
+  </header>
+
+  <!-- Contenido -->
+  <main class="max-w-6xl mx-auto p-6 w-full flex-1 pt-24">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center py-6 bg-blue-700 text-white mt-10 shadow-inner">
+    © 2025 Gestión Médica - Proyecto prototipo
+  </footer>
+
+  <script>
+    const menuBtn = document.getElementById("menu-btn");
+    const menu = document.getElementById("menu");
+    menuBtn.addEventListener("click", () => {
+      menu.classList.toggle("hidden");
+    });
+  </script>
+</body>
+</html>
