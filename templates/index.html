@@ -2,18 +2,56 @@
 {% block title %}Inicio - Gestión Médica{% endblock %}
 {% block content %}
 
-<!-- Formulario -->
-<section id="formulario" class="bg-white shadow-lg rounded-xl p-6 mb-12 border border-gray-100">
-  <h2 class="text-xl md:text-2xl font-semibold mb-6 flex items-center gap-2 text-blue-700">➕ Registrar Paciente</h2>
-  <form action="/registrar" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <input class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 w-full" type="text" name="nombre" placeholder="Nombre completo" required>
-    <input class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 w-full" type="number" name="edad" placeholder="Edad" required>
-    <input class="p-3 border rounded-lg col-span-1 md:col-span-2" type="text" name="enfermedades" placeholder="Enfermedades (separadas por coma)">
-    <input class="p-3 border rounded-lg col-span-1 md:col-span-2" type="text" name="medicamentos" placeholder="Medicamentos (separados por coma)">
-    <input class="p-3 border rounded-lg" type="text" name="contacto_nombre" placeholder="Nombre de contacto">
-    <input class="p-3 border rounded-lg" type="text" name="contacto_tel" placeholder="Teléfono de contacto">
-    <button class="bg-blue-600 text-white py-3 px-6 rounded-lg col-span-1 md:col-span-2 hover:bg-blue-700 transition-all transform hover:scale-105 shadow-md">Registrar Paciente</button>
-  </form>
-</section>
+<form action="/registrar" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <!-- Nombre -->
+  <input class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 w-full" 
+         type="text" name="nombre" placeholder="Nombre completo" required>
+
+  <!-- Edad -->
+  <input class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 w-full" 
+         type="number" name="edad" placeholder="Edad" required>
+
+  <!-- Enfermedades -->
+  <input class="p-3 border rounded-lg col-span-1 md:col-span-2 focus:ring-2 focus:ring-blue-400" 
+         type="text" name="enfermedades" placeholder="Enfermedades (separadas por coma)">
+
+  <!-- Medicamentos -->
+  <input class="p-3 border rounded-lg col-span-1 md:col-span-2 focus:ring-2 focus:ring-blue-400" 
+         type="text" name="medicamentos" placeholder="Medicamentos (separados por coma)">
+
+  <!-- Alergias -->
+  <input class="p-3 border rounded-lg col-span-1 md:col-span-2 focus:ring-2 focus:ring-blue-400" 
+         type="text" name="alergias" placeholder="Alergias (separadas por coma)">
+
+  <!-- Tipo de sangre -->
+  <select name="tipo_sangre" 
+          class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 w-full">
+    <option value="">Tipo de sangre</option>
+    <option value="A+">A+</option>
+    <option value="A-">A-</option>
+    <option value="B+">B+</option>
+    <option value="B-">B-</option>
+    <option value="AB+">AB+</option>
+    <option value="AB-">AB-</option>
+    <option value="O+">O+</option>
+    <option value="O-">O-</option>
+  </select>
+
+  <!-- Contacto -->
+  <input class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-400" 
+         type="text" name="contacto_nombre" placeholder="Nombre de contacto">
+  <input class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-400" 
+         type="text" name="contacto_tel" placeholder="Teléfono de contacto">
+
+  <!-- Descripción -->
+  <textarea name="descripcion" rows="3" 
+            class="p-3 border rounded-lg col-span-1 md:col-span-2 focus:ring-2 focus:ring-blue-400" 
+            placeholder="Descripción del caso"></textarea>
+
+  <!-- Botón -->
+  <button class="bg-blue-600 text-white py-3 px-6 rounded-lg col-span-1 md:col-span-2 hover:bg-blue-700 transition-all transform hover:scale-105 shadow-md">
+    Registrar Paciente
+  </button>
+</form>
 
 {% endblock %}

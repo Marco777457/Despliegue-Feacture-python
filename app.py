@@ -54,24 +54,20 @@ def index():
 @app.route("/registrar", methods=["POST"])
 def registrar():
     nombre = request.form["nombre"]
-    edad = request.form["edad"]
-    enfermedades = [e.strip() for e in request.form.get("enfermedades","").split(",") if e.strip()]
-    medicamentos = [m.strip() for m in request.form.get("medicamentos","").split(",") if m.strip()]
-    contacto_nombre = request.form["contacto_nombre"]
-    contacto_tel = request.form["contacto_tel"]
-
-    datos = cargar_datos()
     datos[nombre] = {
-        "Edad": edad,
-        "Enfermedades": enfermedades,
-        "Medicamentos": medicamentos,
-        "Contacto de Emergencia": {
-            "Nombre": contacto_nombre,
-            "Teléfono": contacto_tel
-        }
+        "Edad": request.form["edad"],
+        "Enfermedades": request.form.get("enfermedades", "").split(",") if request.form.get("enfermedades") else [],
+        "Medicamentos": request.form.get("medicamentos", "").split(",") if request.form.get("medicamentos") else [],
+        "Alergias": request.form.get("alergias", "").split(",") if request.form.get("alergias") else [],
+        "TipoSangre": request.form.get("tipo_sangre", ""),
+        "Contacto": {
+            "Nombre": request.form.get("contacto_nombre", ""),
+            "Telefono": request.form.get("contacto_tel", "")
+        },
+        "Descripcion": request.form.get("descripcion", "")
     }
-    guardar_datos(datos)
     return redirect(url_for("index"))
+
 
 @app.route("/paciente/<nombre>")
 def consultar_paciente(nombre):
