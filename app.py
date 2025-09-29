@@ -47,11 +47,25 @@ def require_api_key(f):
         return f(*args, **kwargs)
     return decorated
 
+def cargar_pacientes():
+    """
+    Devuelve una lista de pacientes en formato:
+    [ {"nombre": "<clave>", ...campos...}, ... ]
+    Esto facilita iterar en templates con: for p in pacientes
+    """
+    datos = cargar_datos()
+    if isinstance(datos, dict):
+        return [{"nombre": nombre, **info} for nombre, info in datos.items()]
+    # si por alguna razón ya guardas una lista, la devolvemos tal cual
+    return datos
+
+
 # ---------- RUTAS HTML EXISTENTES ----------
 @app.route("/")
 def index():
-    datos = cargar_datos()
-    return render_template("index.html", pacientes=datos)
+    pacientes = cargar_pacientes()
+    return render_template("index.html", pacientes=pacientes)
+
 
 # 👉 le faltaba el decorador
 @app.route("/registrar", methods=["POST"])

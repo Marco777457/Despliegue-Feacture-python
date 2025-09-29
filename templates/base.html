@@ -12,8 +12,9 @@
     <div class="max-w-6xl mx-auto flex justify-between items-center p-4">
       <h1 class="text-xl md:text-2xl font-bold flex items-center gap-2">👩‍⚕️ <span>Gestión Médica</span></h1>
       <nav class="hidden sm:flex space-x-6 text-sm md:text-base">
-        <a href="/" class="hover:underline">Inicio</a>
-        <a href="#formulario" class="hover:underline">Registrar</a>
+        <a href="{{ url_for('index') }}" class="hover:underline">Inicio</a>
+        <a href="{{ url_for('nuevo_paciente') }}" class="hover:underline">Registrar</a>
+        <a href="{{ url_for('listar_pacientes') }}" class="hover:underline">Pacientes</a>
       </nav>
       <!-- Botón menú móvil -->
       <button id="menu-btn" class="sm:hidden focus:outline-none text-white">
@@ -22,14 +23,32 @@
     </div>
     <!-- Menú móvil -->
     <div id="menu" class="hidden sm:hidden flex flex-col bg-blue-600 px-4 pb-4">
-      <a href="/" class="py-2 border-b border-blue-500">Inicio</a>
-      <a href="#formulario" class="py-2">Registrar</a>
+      <a href="{{ url_for('index') }}" class="py-2 border-b border-blue-500">Inicio</a>
+      <a href="{{ url_for('nuevo_paciente') }}" class="py-2">Registrar</a>
+      <a href="{{ url_for('listar_pacientes') }}" class="py-2">Pacientes</a>
     </div>
   </header>
 
   <!-- Contenido dinámico -->
   <main class="max-w-6xl mx-auto p-6 w-full flex-1 pt-24">
     {% block content %}{% endblock %}
+
+    <!-- 🔽 Submenú dinámico de pacientes -->
+    {% if pacientes %}
+    <section class="mt-10">
+      <h2 class="text-lg font-semibold text-blue-800 mb-4">Pacientes Registrados</h2>
+      <ul class="list-disc list-inside bg-white shadow rounded-lg p-4">
+        {% for p in pacientes %}
+        <li>
+          <a href="{{ url_for('detalle_paciente', nombre=p['nombre']) }}" 
+             class="text-blue-600 hover:underline">
+             {{ p['nombre'] }}
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endif %}
   </main>
 
   <!-- Footer -->
