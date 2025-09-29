@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Registrar nuevo paciente</h2>
+
+<form method="POST" action="{{ url_for('registrar') }}">
+    <label>Nombre:</label><br>
+    <input type="text" name="nombre" required><br><br>
+
+    <label>Edad:</label><br>
+    <input type="number" name="edad" required><br><br>
+
+    <label>Enfermedades (separadas por coma):</label><br>
+    <input type="text" name="enfermedades"><br><br>
+
+    <label>Medicamentos (separados por coma):</label><br>
+    <input type="text" name="medicamentos"><br><br>
+
+    <label>Alergias (separadas por coma):</label><br>
+    <input type="text" name="alergias"><br><br>
+
+    <label>Tipo de sangre:</label><br>
+    <input type="text" name="tipo_sangre"><br><br>
+
+    <label>Contacto de emergencia - Nombre:</label><br>
+    <input type="text" name="contacto_nombre"><br><br>
+
+    <label>Contacto de emergencia - Teléfono:</label><br>
+    <input type="text" name="contacto_tel"><br><br>
+
+    <label>Descripción del caso:</label><br>
+    <textarea name="descripcion"></textarea><br><br>
+
+    <button type="submit">Registrar</button>
+</form>
+{% endblock %}

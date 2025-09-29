@@ -1,19 +1,24 @@
-{% extends "base.html" %}
-{% block content %}
-<section class="max-w-6xl mx-auto p-6">
-  <h2 class="text-2xl font-semibold text-blue-700 mb-6">👨‍⚕️ Lista de Pacientes</h2>
-
-  <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Nombre</th>
+        <th>Edad</th>
+        <th>Enfermedades</th>
+        <th>Medicamentos</th>
+        <th>Alergias</th>
+        <th>Tipo de sangre</th>
+        <th>Contacto</th>
+        <th>Descripción</th>
+    </tr>
     {% for nombre, paciente in pacientes.items() %}
-      <div class="bg-white border border-gray-100 shadow-sm rounded-xl p-5">
-        <h3 class="text-lg font-bold text-blue-700">{{ nombre }}</h3>
-        <p><strong>Edad:</strong> {{ paciente["Edad"] }}</p>
-        <p><strong>Enfermedades:</strong> {{ paciente["Enfermedades"] | join(', ') }}</p>
-        <p><strong>Medicamentos:</strong> {{ paciente["Medicamentos"] | join(', ') }}</p>
-      </div>
-    {% else %}
-      <p class="text-gray-500 col-span-full">⚠ No hay pacientes registrados aún.</p>
+    <tr>
+        <td>{{ nombre }}</td>
+        <td>{{ paciente["Edad"] }}</td>
+        <td>{{ paciente["Enfermedades"] | join(", ") }}</td>
+        <td>{{ paciente["Medicamentos"] | join(", ") }}</td>
+        <td>{{ paciente["Alergias"] | join(", ") }}</td>
+        <td>{{ paciente["TipoSangre"] }}</td>
+        <td>{{ paciente["Contacto"]["Nombre"] }} ({{ paciente["Contacto"]["Telefono"] }})</td>
+        <td>{{ paciente["Descripcion"] }}</td>
+    </tr>
     {% endfor %}
-  </div>
-</section>
-{% endblock %}
+</table>

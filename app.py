@@ -6,6 +6,8 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)  # Permite llamadas desde otros orígenes (configurable)
 
+datos = []
+
 DB_FILE = "informacion_medica.json"
 API_KEYS_FILE = "api_keys.json"  # opcional: almacenar keys localmente (ver notas)
 
@@ -51,6 +53,8 @@ def index():
     datos = cargar_datos()
     return render_template("index.html", pacientes=datos)
 
+# 👉 le faltaba el decorador
+@app.route("/registrar", methods=["POST"])
 def registrar():
     nombre = request.form["nombre"]
 
@@ -82,6 +86,11 @@ def consultar_paciente(nombre):
 def ver_pacientes():
     datos = cargar_datos()
     return render_template("pacientes.html", pacientes=datos)
+
+@app.route("/nuevo")
+def nuevo_paciente():
+    return render_template("formulario.html")
+
 
 # ---------- NUEVOS ENDPOINTS API (JSON) ----------
 # 1) Listar pacientes (solo nombres o con info completa si quieres)
