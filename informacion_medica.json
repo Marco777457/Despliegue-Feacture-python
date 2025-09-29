@@ -1,3 +1,12 @@
 {
- 
+  "Edad": "25",
+  "Enfermedades": ["anemia"],
+  "Medicamentos": ["paracetamol"],
+  "Alergias": ["ninguna"],
+  "Tipo de Sangre": "O+",
+  "Contacto de Emergencia": {
+    "Nombre": "Juan Pérez",
+    "Teléfono": "999888777"
+  },
+  "Descripcion": "Paciente con leve anemia, bajo tratamiento."
 }
