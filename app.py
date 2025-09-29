@@ -64,16 +64,14 @@ def cargar_pacientes():
 # ---------- RUTAS HTML EXISTENTES ----------
 @app.route("/")
 def index():
-    pacientes = cargar_pacientes()
+    pacientes = cargar_pacientes()  # ✅ lista de diccionarios
     return render_template("index.html", pacientes=pacientes)
 
-# 👉 Nueva ruta para listar pacientes
 @app.route("/pacientes")
 def listar_pacientes():
+    pacientes = cargar_pacientes()  # ✅ corregido
     return render_template("pacientes.html", pacientes=pacientes)
 
-
-# 👉 le faltaba el decorador
 @app.route("/registrar", methods=["POST"])
 def registrar():
     nombre = request.form["nombre"]
@@ -95,21 +93,16 @@ def registrar():
     guardar_datos(datos)
     return redirect(url_for("index"))
 
-
 @app.route("/paciente/<nombre>")
 def consultar_paciente(nombre):
     datos = cargar_datos()
     paciente = datos.get(nombre, None)
     return render_template("detalle.html", nombre=nombre, paciente=paciente)
 
-@app.route("/pacientes")
-def ver_pacientes():
-    datos = cargar_datos()
-    return render_template("pacientes.html", pacientes=datos)
-
 @app.route("/nuevo")
 def nuevo_paciente():
     return render_template("formulario.html")
+
 
 
 # ---------- NUEVOS ENDPOINTS API (JSON) ----------

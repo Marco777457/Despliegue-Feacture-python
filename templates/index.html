@@ -1,62 +1,37 @@
 {% extends "base.html" %}
+
 {% block content %}
+  <section class="bg-white shadow-lg rounded-lg p-6">
+    <h2 class="text-2xl font-bold text-blue-800 mb-4">Pacientes Registrados</h2>
 
-<!-- Formulario -->
-<section id="formulario" class="bg-white shadow-lg rounded-xl p-6 mb-12 border border-gray-100">
-  <h2 class="text-xl md:text-2xl font-semibold mb-6 flex items-center gap-2 text-blue-700">➕ Registrar Paciente</h2>
-  <form action="/registrar" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-    <input class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 w-full" type="text" name="nombre" placeholder="Nombre completo" required>
-    <input class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 w-full" type="number" name="edad" placeholder="Edad" required>
-
-    <input class="p-3 border rounded-lg col-span-1 md:col-span-2 focus:ring-2 focus:ring-blue-400" type="text" name="enfermedades" placeholder="Enfermedades (separadas por coma)">
-    <input class="p-3 border rounded-lg col-span-1 md:col-span-2 focus:ring-2 focus:ring-blue-400" type="text" name="medicamentos" placeholder="Medicamentos (separados por coma)">
-
-    <input class="p-3 border rounded-lg col-span-1 md:col-span-2 focus:ring-2 focus:ring-blue-400" type="text" name="alergias" placeholder="Alergias (separadas por coma)">
-
-    <select name="tipo_sangre" class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 w-full">
-      <option value="">Tipo de sangre</option>
-      <option value="A+">A+</option>
-      <option value="A-">A-</option>
-      <option value="B+">B+</option>
-      <option value="B-">B-</option>
-      <option value="AB+">AB+</option>
-      <option value="AB-">AB-</option>
-      <option value="O+">O+</option>
-      <option value="O-">O-</option>
-    </select>
-
-    <input class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-400" type="text" name="contacto_nombre" placeholder="Nombre de contacto">
-    <input class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-400" type="text" name="contacto_tel" placeholder="Teléfono de contacto">
-
-    <textarea name="descripcion" rows="3" class="p-3 border rounded-lg col-span-1 md:col-span-2 focus:ring-2 focus:ring-blue-400" placeholder="Descripción del caso"></textarea>
-
-    <button class="bg-blue-600 text-white py-3 px-6 rounded-lg col-span-1 md:col-span-2 hover:bg-blue-700 transition-all transform hover:scale-105 shadow-md">
-      Registrar Paciente
-    </button>
-  </form>
-</section>
-
-<!-- Lista de pacientes -->
-<section>
-  <h2 class="text-xl md:text-2xl font-semibold mb-6 text-blue-700">👨‍⚕️ Pacientes Registrados</h2>
-  
-  <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-    {% for nombre, paciente in pacientes.items() %}
-      <a href="{{ url_for('consultar_paciente', nombre=nombre) }}" class="block bg-white border border-gray-100 shadow-sm rounded-xl p-5 hover:shadow-xl hover:-translate-y-1 transform transition-all">
-        <div class="flex justify-between items-center mb-3">
-          <h3 class="text-lg font-bold text-blue-700">{{ nombre }}</h3>
-          <span class="text-xs md:text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Edad: {{ paciente['Edad'] }}</span>
-        </div>
-        <p class="text-gray-600 text-sm mb-1"><strong>Enfermedades:</strong> {{ paciente['Enfermedades'] | join(', ') }}</p>
-        <p class="text-gray-600 text-sm mb-1"><strong>Medicamentos:</strong> {{ paciente['Medicamentos'] | join(', ') }}</p>
-        <p class="text-gray-600 text-sm mb-1"><strong>Alergias:</strong> {{ paciente['Alergias'] | join(', ') }}</p>
-        <p class="text-gray-600 text-sm mb-1"><strong>Tipo de sangre:</strong> {{ paciente['TipoSangre'] }}</p>
-      </a>
+    {% if pacientes %}
+      <div class="overflow-x-auto">
+        <table class="min-w-full border border-gray-200 rounded-lg overflow-hidden">
+          <thead class="bg-blue-600 text-white">
+            <tr>
+              <th class="px-4 py-2 text-left">Nombre</th>
+              <th class="px-4 py-2 text-left">Edad</th>
+              <th class="px-4 py-2 text-left">Diagnóstico</th>
+              <th class="px-4 py-2 text-left">Acciones</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            {% for paciente in pacientes %}
+            <tr class="hover:bg-blue-50">
+              <td class="px-4 py-2">{{ paciente.nombre }}</td>
+              <td class="px-4 py-2">{{ paciente.edad }}</td>
+              <td class="px-4 py-2">{{ paciente.diagnostico }}</td>
+              <td class="px-4 py-2">
+                <a href="{{ url_for('detalle_paciente', nombre=paciente.nombre) }}" 
+                   class="text-blue-600 hover:underline">Ver Detalle</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     {% else %}
-      <p class="text-gray-500 text-center col-span-full">⚠ No hay pacientes registrados aún.</p>
-    {% endfor %}
-  </div>
-</section>
-
+      <p class="text-gray-600">No hay pacientes registrados aún.</p>
+    {% endif %}
+  </section>
 {% endblock %}
