@@ -7,6 +7,7 @@ app = Flask(__name__)
 CORS(app)  # Permite llamadas desde otros orígenes (configurable)
 
 datos = []
+pacientes = []
 
 DB_FILE = "informacion_medica.json"
 API_KEYS_FILE = "api_keys.json"  # opcional: almacenar keys localmente (ver notas)
@@ -65,6 +66,11 @@ def cargar_pacientes():
 def index():
     pacientes = cargar_pacientes()
     return render_template("index.html", pacientes=pacientes)
+
+# 👉 Nueva ruta para listar pacientes
+@app.route("/pacientes")
+def listar_pacientes():
+    return render_template("pacientes.html", pacientes=pacientes)
 
 
 # 👉 le faltaba el decorador
