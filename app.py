@@ -6,6 +6,8 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)  # Permitir llamadas desde otros orígenes
 
+pacientes = []
+
 DB_FILE = "informacion_medica.json"
 API_KEYS_FILE = "api_keys.json"
 
@@ -70,7 +72,7 @@ def detalle_paciente(nombre):
 
 @app.route("/nuevo")
 def nuevo_paciente():
-    return render_template("registro.html")
+    return render_template("formulario.html")
 
 @app.route("/registrar", methods=["POST"])
 def registrar():
@@ -92,7 +94,7 @@ def registrar():
         }
     }
     guardar_datos(datos)
-    return redirect(url_for("paciente.html"))
+    return redirect(url_for("listar_pacientes"))
 
 # ---------- API ----------
 @app.route("/api/pacientes", methods=["GET"])
