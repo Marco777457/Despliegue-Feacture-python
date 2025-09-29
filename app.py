@@ -51,6 +51,16 @@ def index():
     datos = cargar_datos()
     return render_template("index.html", pacientes=datos)
 
+@app.route("/detalle/<nombre>")
+def detalle_paciente(nombre):
+    datos = cargar_datos()
+    paciente = datos.get(nombre)
+    if paciente:
+        return render_template("detalle.html", nombre=nombre, paciente=paciente)
+    return "Paciente no encontrado", 404
+
+
+
 @app.route("/registrar", methods=["POST"])
 def registrar():
     nombre = request.form["nombre"]
