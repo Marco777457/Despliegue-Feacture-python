@@ -92,7 +92,7 @@ def registrar():
         }
     }
     guardar_datos(datos)
-    return redirect(url_for("listar_pacientes"))
+    return redirect(url_for("paciente.html"))
 
 # ---------- API ----------
 @app.route("/api/pacientes", methods=["GET"])
