@@ -48,8 +48,7 @@ def require_api_key(f):
 # ---------- RUTAS HTML EXISTENTES ----------
 @app.route("/")
 def index():
-    datos = cargar_datos()
-    return render_template("index.html", pacientes=datos)
+    return render_template("index.html")  # solo muestra portada/inicio
 
 @app.route("/detalle/<nombre>")
 def detalle_paciente(nombre):
@@ -81,7 +80,7 @@ def registrar():
         }
     }
     guardar_datos(datos)
-    return redirect(url_for("index"))
+    return redirect(url_for("pacientes.html"))
 
 @app.route("/paciente/<nombre>")
 def consultar_paciente(nombre):
