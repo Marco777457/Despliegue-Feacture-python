@@ -1,25 +1,17 @@
 {% extends "base.html" %}
+
 {% block content %}
+<div class="container mt-4">
+    <h2>Detalles del Paciente</h2>
+    <ul class="list-group">
+        <li class="list-group-item"><strong>Nombre:</strong> {{ paciente.nombre }}</li>
+        <li class="list-group-item"><strong>DNI:</strong> {{ paciente.dni }}</li>
+        <li class="list-group-item"><strong>Edad:</strong> {{ paciente.edad }}</li>
+        <li class="list-group-item"><strong>Alergias:</strong> {{ paciente.alergias }}</li>
+        <li class="list-group-item"><strong>Tipo de Sangre:</strong> {{ paciente.tipo_sangre }}</li>
+        <li class="list-group-item"><strong>Descripción del Caso:</strong> {{ paciente.descripcion }}</li>
+    </ul>
 
-<section class="bg-white shadow-lg rounded-xl p-6 border border-gray-100">
-  <h2 class="text-xl md:text-2xl font-bold mb-6 text-blue-700">📋 Detalle del Paciente</h2>
-
-  {% if paciente %}
-    <div class="space-y-3">
-      <p><strong>Nombre:</strong> {{ nombre }}</p>
-      <p><strong>Edad:</strong> {{ paciente['Edad'] }}</p>
-      <p><strong>Enfermedades:</strong> {{ paciente['Enfermedades'] | join(', ') }}</p>
-      <p><strong>Medicamentos:</strong> {{ paciente['Medicamentos'] | join(', ') }}</p>
-      <p><strong>Alergias:</strong> {{ paciente['Alergias'] | join(', ') }}</p>
-      <p><strong>Tipo de Sangre:</strong> {{ paciente['TipoSangre'] }}</p>
-      <p><strong>Contacto:</strong> {{ paciente['Contacto']['Nombre'] }} ({{ paciente['Contacto']['Telefono'] }})</p>
-      <p><strong>Descripción:</strong> {{ paciente['Descripcion'] }}</p>
-    </div>
-  {% else %}
-    <p class="text-red-600">❌ Paciente no encontrado.</p>
-  {% endif %}
-
-  <a href="/" class="mt-6 inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-all">⬅ Volver</a>
-</section>
-
+    <a href="{{ url_for('index') }}" class="btn btn-primary mt-3">Volver</a>
+</div>
 {% endblock %}

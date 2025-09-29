@@ -170,6 +170,14 @@ def api_delete_paciente(nombre):
     guardar_datos(datos)
     return jsonify({"ok": True}), 200
 
+@app.route("/detalle/<nombre>")
+def detalle_paciente(nombre):
+    paciente = next((p for p in pacientes if p["nombre"] == nombre), None)
+    if paciente:
+        return render_template("detalle.html", paciente=paciente)
+    return "Paciente no encontrado", 404
+
+
 # ---------- FIN API ----------
 
 # Nota: no uses app.run() cuando despliegues con gunicorn; Render ejecuta gunicorn para ti.
