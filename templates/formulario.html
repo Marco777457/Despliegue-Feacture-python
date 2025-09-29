@@ -1,36 +1,69 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Registrar nuevo paciente</h2>
+<h2 class="text-2xl font-bold mb-6 text-blue-700">📝 Registrar nuevo paciente</h2>
 
-<form method="POST" action="{{ url_for('registrar') }}">
-    <label>Nombre:</label><br>
-    <input type="text" name="nombre" required><br><br>
+<form method="POST" action="{{ url_for('registrar') }}" 
+      class="bg-white shadow-lg rounded-lg p-6 space-y-4">
 
-    <label>Edad:</label><br>
-    <input type="number" name="edad" required><br><br>
+    <div>
+        <label class="block text-gray-700 font-semibold">Nombre:</label>
+        <input type="text" name="nombre" required
+               class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400">
+    </div>
 
-    <label>Enfermedades (separadas por coma):</label><br>
-    <input type="text" name="enfermedades"><br><br>
+    <div>
+        <label class="block text-gray-700 font-semibold">Edad:</label>
+        <input type="number" name="edad" required
+               class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400">
+    </div>
 
-    <label>Medicamentos (separados por coma):</label><br>
-    <input type="text" name="medicamentos"><br><br>
+    <div>
+        <label class="block text-gray-700 font-semibold">Enfermedades:</label>
+        <input type="text" name="enfermedades"
+               class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400"
+               placeholder="Separadas por coma">
+    </div>
 
-    <label>Alergias (separadas por coma):</label><br>
-    <input type="text" name="alergias"><br><br>
+    <div>
+        <label class="block text-gray-700 font-semibold">Medicamentos:</label>
+        <input type="text" name="medicamentos"
+               class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400"
+               placeholder="Separados por coma">
+    </div>
 
-    <label>Tipo de sangre:</label><br>
-    <input type="text" name="tipo_sangre"><br><br>
+    <div>
+        <label class="block text-gray-700 font-semibold">Alergias:</label>
+        <input type="text" name="alergias"
+               class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400"
+               placeholder="Separadas por coma">
+    </div>
 
-    <label>Contacto de emergencia - Nombre:</label><br>
-    <input type="text" name="contacto_nombre"><br><br>
+    <div>
+        <label class="block text-gray-700 font-semibold">Tipo de sangre:</label>
+        <input type="text" name="tipo_sangre"
+               class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400">
+    </div>
 
-    <label>Contacto de emergencia - Teléfono:</label><br>
-    <input type="text" name="contacto_tel"><br><br>
+    <div>
+        <label class="block text-gray-700 font-semibold">Contacto de emergencia:</label>
+        <input type="text" name="contacto_nombre"
+               class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400"
+               placeholder="Nombre">
+        <input type="text" name="contacto_tel"
+               class="w-full border border-gray-300 rounded-lg p-2 mt-2 focus:ring-2 focus:ring-blue-400"
+               placeholder="Teléfono">
+    </div>
 
-    <label>Descripción del caso:</label><br>
-    <textarea name="descripcion"></textarea><br><br>
+    <div>
+        <label class="block text-gray-700 font-semibold">Descripción del caso:</label>
+        <textarea name="descripcion"
+                  class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400"></textarea>
+    </div>
 
-    <button type="submit">Registrar</button>
+    <button type="submit"
+            class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition">
+        Registrar
+    </button>
 </form>
 {% endblock %}

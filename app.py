@@ -6,8 +6,6 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)  # Permitir llamadas desde otros orígenes
 
-pacientes = []
-
 DB_FILE = "informacion_medica.json"
 API_KEYS_FILE = "api_keys.json"
 
@@ -52,14 +50,19 @@ def index():
 @app.route("/pacientes")
 def listar_pacientes():
     datos = cargar_datos()
-    lista_pacientes = [
-        {
+    lista_pacientes = []
+    for nombre, info in datos.items():
+        lista_pacientes.append({
             "nombre": nombre,
             "edad": info.get("Edad"),
-            "diagnostico": ", ".join(info.get("Enfermedades", [])) if info.get("Enfermedades") else "Sin diagnóstico"
-        }
-        for nombre, info in datos.items()
-    ]
+            "enfermedades": ", ".join(info.get("Enfermedades", [])) if info.get("Enfermedades") else "Ninguna",
+            "medicamentos": ", ".join(info.get("Medicamentos", [])) if info.get("Medicamentos") else "Ninguno",
+            "alergias": ", ".join(info.get("Alergias", [])) if info.get("Alergias") else "Ninguna",
+            "tipo_sangre": info.get("Tipo de Sangre", "No especificado"),
+            "contacto_nombre": info.get("Contacto de Emergencia", {}).get("Nombre", ""),
+            "contacto_tel": info.get("Contacto de Emergencia", {}).get("Teléfono", ""),
+            "descripcion": info.get("Descripcion", "")
+        })
     return render_template("pacientes.html", pacientes=lista_pacientes)
 
 @app.route("/detalle/<nombre>")
@@ -80,18 +83,24 @@ def registrar():
     edad = request.form["edad"]
     enfermedades = [e.strip() for e in request.form.get("enfermedades","").split(",") if e.strip()]
     medicamentos = [m.strip() for m in request.form.get("medicamentos","").split(",") if m.strip()]
+    alergias = [a.strip() for a in request.form.get("alergias","").split(",") if a.strip()]
+    tipo_sangre = request.form.get("tipo_sangre", "")
     contacto_nombre = request.form["contacto_nombre"]
     contacto_tel = request.form["contacto_tel"]
+    descripcion = request.form.get("descripcion", "")
 
     datos = cargar_datos()
     datos[nombre] = {
         "Edad": edad,
         "Enfermedades": enfermedades,
         "Medicamentos": medicamentos,
+        "Alergias": alergias,
+        "Tipo de Sangre": tipo_sangre,
         "Contacto de Emergencia": {
             "Nombre": contacto_nombre,
             "Teléfono": contacto_tel
-        }
+        },
+        "Descripcion": descripcion
     }
     guardar_datos(datos)
     return redirect(url_for("listar_pacientes"))
@@ -133,7 +142,10 @@ def api_create_update_paciente():
         "Edad": payload.get("Edad", ""),
         "Enfermedades": payload.get("Enfermedades", []),
         "Medicamentos": payload.get("Medicamentos", []),
-        "Contacto de Emergencia": payload.get("Contacto de Emergencia", {})
+        "Alergias": payload.get("Alergias", []),
+        "Tipo de Sangre": payload.get("Tipo de Sangre", ""),
+        "Contacto de Emergencia": payload.get("Contacto de Emergencia", {}),
+        "Descripcion": payload.get("Descripcion", "")
     }
     guardar_datos(datos)
     return jsonify({"ok": True, "paciente": {nombre: datos[nombre]}}), 201
