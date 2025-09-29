@@ -14,21 +14,20 @@
       
       <!-- Menú en escritorio -->
       <nav class="hidden sm:flex space-x-6 text-sm md:text-base">
-        <!-- Ajustar rutas para GitHub Pages -->
-        <a href="./index.html" class="hover:underline">Inicio</a>
-        <a href="./registro.html" class="hover:underline">Registrar</a>
+        <a href="{{ url_for('index') }}" class="hover:underline">Inicio</a>
+        <a href="{{ url_for('nuevo_paciente') }}" class="hover:underline">Registrar</a>
+        <a href="{{ url_for('listar_pacientes') }}" class="hover:underline">Pacientes</a>
       </nav>
 
       <!-- Botón menú móvil -->
-      <button id="menu-btn" class="sm:hidden focus:outline-none text-white text-2xl">
-        ☰
-      </button>
+      <button id="menu-btn" class="sm:hidden focus:outline-none text-white text-2xl">☰</button>
     </div>
 
     <!-- Menú móvil -->
     <div id="menu" class="hidden sm:hidden flex flex-col bg-blue-600 px-4 pb-4">
-      <a href="./index.html" class="py-2 border-b border-blue-500">Inicio</a>
-      <a href="./registro.html" class="py-2">Registrar</a>
+      <a href="{{ url_for('index') }}" class="py-2 border-b border-blue-500">Inicio</a>
+      <a href="{{ url_for('nuevo_paciente') }}" class="py-2 border-b border-blue-500">Registrar</a>
+      <a href="{{ url_for('listar_pacientes') }}" class="py-2">Pacientes</a>
     </div>
   </header>
 

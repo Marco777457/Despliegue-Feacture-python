@@ -1,15 +1,15 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify, abort
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 import json, os
 from functools import wraps
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)  # Permite llamadas desde otros orígenes (configurable)
+CORS(app)  # Permitir llamadas desde otros orígenes
 
 DB_FILE = "informacion_medica.json"
-API_KEYS_FILE = "api_keys.json"  # opcional: almacenar keys localmente (ver notas)
+API_KEYS_FILE = "api_keys.json"
 
-# ---------- helpers para datos ----------
+# ---------- Helpers ----------
 def cargar_datos():
     if os.path.exists(DB_FILE):
         with open(DB_FILE, "r", encoding="utf-8") as f:
@@ -20,12 +20,9 @@ def guardar_datos(datos):
     with open(DB_FILE, "w", encoding="utf-8") as f:
         json.dump(datos, f, indent=4, ensure_ascii=False)
 
-# ---------- API key simple ----------
-# Puedes definir las API KEYS en variable de entorno: ANGELER_API_KEYS="key1,key2"
 def load_api_keys():
     keys_env = os.environ.get("ANGELER_API_KEYS", "")
     keys = [k.strip() for k in keys_env.split(",") if k.strip()]
-    # también cargamos de archivo si existe (opcional)
     if os.path.exists(API_KEYS_FILE):
         try:
             with open(API_KEYS_FILE, "r", encoding="utf-8") as f:
@@ -45,10 +42,23 @@ def require_api_key(f):
         return f(*args, **kwargs)
     return decorated
 
-# ---------- RUTAS HTML EXISTENTES ----------
+# ---------- Rutas HTML ----------
 @app.route("/")
 def index():
-    return render_template("index.html")  # solo muestra portada/inicio
+    return render_template("index.html")
+
+@app.route("/pacientes")
+def listar_pacientes():
+    datos = cargar_datos()
+    lista_pacientes = [
+        {
+            "nombre": nombre,
+            "edad": info.get("Edad"),
+            "diagnostico": ", ".join(info.get("Enfermedades", [])) if info.get("Enfermedades") else "Sin diagnóstico"
+        }
+        for nombre, info in datos.items()
+    ]
+    return render_template("pacientes.html", pacientes=lista_pacientes)
 
 @app.route("/detalle/<nombre>")
 def detalle_paciente(nombre):
@@ -58,7 +68,9 @@ def detalle_paciente(nombre):
         return render_template("detalle.html", nombre=nombre, paciente=paciente)
     return "Paciente no encontrado", 404
 
-
+@app.route("/nuevo")
+def nuevo_paciente():
+    return render_template("registro.html")
 
 @app.route("/registrar", methods=["POST"])
 def registrar():
@@ -80,28 +92,19 @@ def registrar():
         }
     }
     guardar_datos(datos)
-    return redirect(url_for("pacientes.html"))
+    return redirect(url_for("listar_pacientes"))
 
-@app.route("/paciente/<nombre>")
-def consultar_paciente(nombre):
-    datos = cargar_datos()
-    paciente = datos.get(nombre, None)
-    return render_template("detalle.html", nombre=nombre, paciente=paciente)
-
-# ---------- NUEVOS ENDPOINTS API (JSON) ----------
-# 1) Listar pacientes (solo nombres o con info completa si quieres)
+# ---------- API ----------
 @app.route("/api/pacientes", methods=["GET"])
 @require_api_key
 def api_list_pacientes():
     datos = cargar_datos()
-    # opcional: ?summary=true devuelve solo nombres y edad
     summary = request.args.get("summary","false").lower() == "true"
     if summary:
         summary_list = [{"nombre": n, "Edad": datos[n].get("Edad")} for n in datos]
         return jsonify(summary_list)
     return jsonify(datos)
 
-# 2) Obtener detalle de un paciente
 @app.route("/api/paciente/<nombre>", methods=["GET"])
 @require_api_key
 def api_get_paciente(nombre):
@@ -111,15 +114,6 @@ def api_get_paciente(nombre):
         return jsonify({"error": "Paciente no encontrado"}), 404
     return jsonify({nombre: paciente})
 
-# 3) Crear o actualizar paciente (Angeler puede POST JSON)
-# Example JSON body:
-# {
-#   "nombre": "Juan",
-#   "Edad": "80",
-#   "Enfermedades": ["Diabetes"],
-#   "Medicamentos": ["Metformina"],
-#   "Contacto de Emergencia": {"Nombre": "Ana", "Teléfono": "999"}
-# }
 @app.route("/api/paciente", methods=["POST", "PUT"])
 @require_api_key
 def api_create_update_paciente():
@@ -142,7 +136,6 @@ def api_create_update_paciente():
     guardar_datos(datos)
     return jsonify({"ok": True, "paciente": {nombre: datos[nombre]}}), 201
 
-# 4) Eliminar paciente (opcional, protegido)
 @app.route("/api/paciente/<nombre>", methods=["DELETE"])
 @require_api_key
 def api_delete_paciente(nombre):
@@ -153,9 +146,7 @@ def api_delete_paciente(nombre):
     guardar_datos(datos)
     return jsonify({"ok": True}), 200
 
-# ---------- FIN API ----------
-
-# Nota: no uses app.run() cuando despliegues con gunicorn; Render ejecuta gunicorn para ti.
+# ---------- Main ----------
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=True)
