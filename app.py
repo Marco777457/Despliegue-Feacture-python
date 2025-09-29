@@ -6,9 +6,6 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)  # Permite llamadas desde otros orígenes (configurable)
 
-datos = []
-pacientes = []
-
 DB_FILE = "informacion_medica.json"
 API_KEYS_FILE = "api_keys.json"  # opcional: almacenar keys localmente (ver notas)
 
@@ -48,48 +45,31 @@ def require_api_key(f):
         return f(*args, **kwargs)
     return decorated
 
-def cargar_pacientes():
-    """
-    Devuelve una lista de pacientes en formato:
-    [ {"nombre": "<clave>", ...campos...}, ... ]
-    Esto facilita iterar en templates con: for p in pacientes
-    """
-    datos = cargar_datos()
-    if isinstance(datos, dict):
-        return [{"nombre": nombre, **info} for nombre, info in datos.items()]
-    # si por alguna razón ya guardas una lista, la devolvemos tal cual
-    return datos
-
-
 # ---------- RUTAS HTML EXISTENTES ----------
 @app.route("/")
 def index():
-    pacientes = cargar_pacientes()  # ✅ lista de diccionarios
-    return render_template("index.html", pacientes=pacientes)
-
-@app.route("/pacientes")
-def listar_pacientes():
-    pacientes = cargar_pacientes()  # ✅ corregido
-    return render_template("pacientes.html", pacientes=pacientes)
+    datos = cargar_datos()
+    return render_template("index.html", pacientes=datos)
 
 @app.route("/registrar", methods=["POST"])
 def registrar():
     nombre = request.form["nombre"]
+    edad = request.form["edad"]
+    enfermedades = [e.strip() for e in request.form.get("enfermedades","").split(",") if e.strip()]
+    medicamentos = [m.strip() for m in request.form.get("medicamentos","").split(",") if m.strip()]
+    contacto_nombre = request.form["contacto_nombre"]
+    contacto_tel = request.form["contacto_tel"]
 
     datos = cargar_datos()
     datos[nombre] = {
-        "Edad": request.form["edad"],
-        "Enfermedades": request.form.get("enfermedades", "").split(",") if request.form.get("enfermedades") else [],
-        "Medicamentos": request.form.get("medicamentos", "").split(",") if request.form.get("medicamentos") else [],
-        "Alergias": request.form.get("alergias", "").split(",") if request.form.get("alergias") else [],
-        "TipoSangre": request.form.get("tipo_sangre", ""),
-        "Contacto": {
-            "Nombre": request.form.get("contacto_nombre", ""),
-            "Telefono": request.form.get("contacto_tel", "")
-        },
-        "Descripcion": request.form.get("descripcion", "")
+        "Edad": edad,
+        "Enfermedades": enfermedades,
+        "Medicamentos": medicamentos,
+        "Contacto de Emergencia": {
+            "Nombre": contacto_nombre,
+            "Teléfono": contacto_tel
+        }
     }
-
     guardar_datos(datos)
     return redirect(url_for("index"))
 
@@ -98,12 +78,6 @@ def consultar_paciente(nombre):
     datos = cargar_datos()
     paciente = datos.get(nombre, None)
     return render_template("detalle.html", nombre=nombre, paciente=paciente)
-
-@app.route("/nuevo")
-def nuevo_paciente():
-    return render_template("formulario.html")
-
-
 
 # ---------- NUEVOS ENDPOINTS API (JSON) ----------
 # 1) Listar pacientes (solo nombres o con info completa si quieres)
@@ -169,14 +143,6 @@ def api_delete_paciente(nombre):
     datos.pop(nombre)
     guardar_datos(datos)
     return jsonify({"ok": True}), 200
-
-@app.route("/detalle/<nombre>")
-def detalle_paciente(nombre):
-    paciente = next((p for p in pacientes if p["nombre"] == nombre), None)
-    if paciente:
-        return render_template("detalle.html", paciente=paciente)
-    return "Paciente no encontrado", 404
-
 
 # ---------- FIN API ----------
 
