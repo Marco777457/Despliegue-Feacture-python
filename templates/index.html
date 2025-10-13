@@ -4,6 +4,7 @@
 <section class="text-center">
   <h2 class="text-3xl font-bold text-blue-800 mb-6">Bienvenido al Sistema de Gestión Médica</h2>
   <p class="text-gray-700 text-lg mb-6">
+<<<<<<< HEAD
     Este sistema está diseñado para llevar el control médico de personas de la tercera edad.
     Puedes registrar nuevos pacientes, consultar su historial y gestionar emergencias.
   </p>
@@ -19,3 +20,14 @@
   </div>
 </section>
 {% endblock %}
+=======
+    Este sistema está diseñado para llevar el control médico de personas de la tercera edad.  
+    Puedes registrar nuevos pacientes, consultar su historial y gestionar emergencias.
+  </p>
+  <div class="flex justify-center gap-4">
+    <a href="{{ url_for('nuevo_paciente') }}" class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Registrar Paciente</a>
+    <a href="{{ url_for('listar_pacientes') }}" class="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700">Ver Pacientes</a>
+  </div>
+</section>
+{% endblock %}
+>>>>>>> 130d4ad8d5009c01618984fb474f3fed1735ad3c
