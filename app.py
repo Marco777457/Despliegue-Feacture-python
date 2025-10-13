@@ -112,13 +112,25 @@ def registrar():
 # ---------- Evaluaciones Médicas ----------
 @app.route("/evaluaciones")
 def ver_evaluaciones():
-    data = load_json()
+    datos = load_json()
     evaluaciones = []
-    for nombre, info in data.items():
+
+    # Recorre todos los pacientes y extrae sus evaluaciones
+    for nombre, info in datos.items():
         for ev in info.get("Evaluaciones", []):
-            ev["nombre"] = nombre
-            evaluaciones.append(ev)
-    return render_template("evaluaciones.html", evaluaciones=evaluaciones)
+            evaluaciones.append({
+                "nombre": nombre,
+                "año": ev.get("Año", ""),
+                "presion": ev.get("Presión Arterial", ""),
+                "colesterol": ev.get("Colesterol", ""),
+                "observaciones": ev.get("Observaciones", "")
+            })
+
+    # También enviamos los nombres de pacientes para el desplegable
+    pacientes = list(datos.keys())
+
+    return render_template("evaluaciones.html", evaluaciones=evaluaciones, pacientes=pacientes)
+
 
 @app.route("/registrar_evaluacion", methods=["POST"])
 def registrar_evaluacion():
@@ -128,20 +140,37 @@ def registrar_evaluacion():
     colesterol = request.form["colesterol"]
     observaciones = request.form["observaciones"]
 
-    data = load_json()
-    if nombre not in data:
-        return "⚠️ Paciente no encontrado", 404
+    datos = load_json()
 
-    nueva = {
+    # Si el paciente no existe, créalo automáticamente
+    if nombre not in datos:
+        datos[nombre] = {}
+
+    datos[nombre].setdefault("Evaluaciones", []).append({
         "Año": año,
         "Presión Arterial": presion,
         "Colesterol": colesterol,
         "Observaciones": observaciones
-    }
+    })
 
-    data[nombre].setdefault("Evaluaciones", []).append(nueva)
-    save_json(data)
-    return redirect("/evaluaciones")
+    save_json(datos)
+
+    # 🔁 En lugar de redirigir, volvemos a mostrar la página con la tabla actualizada
+    evaluaciones = []
+    for nombre_p, info in datos.items():
+        for ev in info.get("Evaluaciones", []):
+            evaluaciones.append({
+                "nombre": nombre_p,
+                "año": ev.get("Año", ""),
+                "presion": ev.get("Presión Arterial", ""),
+                "colesterol": ev.get("Colesterol", ""),
+                "observaciones": ev.get("Observaciones", "")
+            })
+
+    pacientes = list(datos.keys())
+
+    return render_template("evaluaciones.html", evaluaciones=evaluaciones, pacientes=pacientes)
+
 
 # ---------- API ----------
 @app.route("/api/pacientes", methods=["GET"])

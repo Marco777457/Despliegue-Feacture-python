@@ -2,26 +2,38 @@
 {% block content %}
 <h2 class="text-2xl font-bold mb-4 text-green-700">📈 Evaluaciones Médicas Preventivas</h2>
 
-<form action="/registrar_evaluacion" method="POST" class="mb-6 bg-white p-4 rounded shadow">
-  <label class="block mb-2">Nombre del paciente:</label>
-  <input type="text" name="nombre" class="border px-2 py-1 w-full mb-3" required>
+<!-- Formulario de registro -->
+<form action="/registrar_evaluacion" method="POST" class="mb-6 bg-white p-6 rounded shadow-lg">
+  
+  <!-- 🩺 Selector de paciente -->
+  <label class="block mb-2 font-semibold text-gray-700">Nombre del paciente:</label>
+  <select name="nombre" class="border px-2 py-2 w-full mb-3 rounded focus:ring-2 focus:ring-green-400" required>
+    <option value="">Seleccione un paciente</option>
+    {% for p in pacientes %}
+    <option value="{{ p }}">{{ p }}</option>
+    {% endfor %}
+  </select>
 
-  <label class="block mb-2">Año:</label>
-  <input type="text" name="año" class="border px-2 py-1 w-full mb-3" required>
+  <label class="block mb-2 font-semibold text-gray-700">Año:</label>  
+  <input type="text" name="año" class="border px-2 py-2 w-full mb-3 rounded focus:ring-2 focus:ring-green-400" required>
 
-  <label class="block mb-2">Presión Arterial:</label>
-  <input type="text" name="presion" class="border px-2 py-1 w-full mb-3">
+  <label class="block mb-2 font-semibold text-gray-700">Presión Arterial:</label>
+  <input type="text" name="presion" class="border px-2 py-2 w-full mb-3 rounded focus:ring-2 focus:ring-green-400">
 
-  <label class="block mb-2">Colesterol:</label>
-  <input type="text" name="colesterol" class="border px-2 py-1 w-full mb-3">
+  <label class="block mb-2 font-semibold text-gray-700">Colesterol:</label>
+  <input type="text" name="colesterol" class="border px-2 py-2 w-full mb-3 rounded focus:ring-2 focus:ring-green-400">
 
-  <label class="block mb-2">Observaciones:</label>
-  <textarea name="observaciones" class="border px-2 py-1 w-full mb-3"></textarea>
+  <label class="block mb-2 font-semibold text-gray-700">Observaciones:</label>
+  <textarea name="observaciones" class="border px-2 py-2 w-full mb-3 rounded focus:ring-2 focus:ring-green-400"></textarea>
 
-  <button type="submit" class="bg-green-600 text-white py-2 px-4 rounded">Registrar Evaluación</button>
+  <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded font-bold hover:bg-green-700 transition">
+    Registrar Evaluación
+  </button>
 </form>
 
+<!-- Tabla de evaluaciones -->
 {% if evaluaciones %}
+  <h3 class="text-xl font-semibold mb-3 text-gray-800">📋 Historial de Evaluaciones</h3>
   <table class="table-auto border-collapse border border-gray-300 w-full shadow-md bg-white rounded-lg">
     <thead class="bg-green-600 text-white">
       <tr>
@@ -45,6 +57,6 @@
     </tbody>
   </table>
 {% else %}
-  <p class="text-gray-600">⚠️ No hay evaluaciones registradas aún.</p>
+  <p class="text-gray-600 mt-4">⚠️ No hay evaluaciones registradas aún.</p>
 {% endif %}
 {% endblock %}
