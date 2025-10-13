@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+
 {% block content %}
 <section class="text-center">
   <h2 class="text-3xl font-bold text-blue-800 mb-6">Bienvenido al Sistema de Gestión Médica</h2>
@@ -6,23 +7,17 @@
     Este sistema está diseñado para llevar el control médico de personas de la tercera edad.
     Puedes registrar nuevos pacientes, consultar su historial y gestionar emergencias.
   </p>
+
   <div class="flex justify-center gap-4">
-    <a href="{{ url_for('nuevo_paciente') }}"
-      class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Registrar Paciente</a>
-    <a href="{{ url_for('listar_pacientes') }}"
-      class="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700">Ver Pacientes</a>
-    <a href="/evaluaciones" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+    <a href="{{ url_for('nuevo_paciente') }}" class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">
+      Registrar Paciente
+    </a>
+    <a href="{{ url_for('listar_pacientes') }}" class="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700">
+      Ver Pacientes
+    </a>
+    <a href="{{ url_for('evaluaciones') }}" class="bg-purple-600 text-white px-4 py-2 rounded shadow hover:bg-purple-700">
       Ver Evaluaciones Médicas
     </a>
-  </div>
-</section>
-{% endblock %}
-    Este sistema está diseñado para llevar el control médico de personas de la tercera edad.  
-    Puedes registrar nuevos pacientes, consultar su historial y gestionar emergencias.
-  </p>
-  <div class="flex justify-center gap-4">
-    <a href="{{ url_for('nuevo_paciente') }}" class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Registrar Paciente</a>
-    <a href="{{ url_for('listar_pacientes') }}" class="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700">Ver Pacientes</a>
   </div>
 </section>
 {% endblock %}
