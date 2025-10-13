@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Detalles del Paciente</h2>
+    <ul class="list-group">
+        <li class="list-group-item"><strong>Nombre:</strong> {{ nombre }}</li>
+        <li class="list-group-item"><strong>DNI:</strong> {{ paciente["dni"] }}</li>
+        <li class="list-group-item"><strong>Edad:</strong> {{ paciente["edad"] }}</li>
+        <li class="list-group-item"><strong>Alergias:</strong> {{ paciente["alergias"] }}</li>
+        <li class="list-group-item"><strong>Tipo de Sangre:</strong> {{ paciente["tipo_sangre"] }}</li>
+        <li class="list-group-item"><strong>Descripción:</strong> {{ paciente["descripcion"] }}</li>
+    </ul>
+
+    <a href="{{ url_for('index') }}" class="btn btn-primary mt-3">Volver</a>
+</div>
+{% endblock %}

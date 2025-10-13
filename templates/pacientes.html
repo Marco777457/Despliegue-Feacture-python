@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="text-2xl font-bold mb-6 text-blue-700">📋 Lista de Pacientes Registrados</h2>
+
+{% if pacientes %}
+  <table class="table-auto border-collapse border border-gray-300 w-full shadow-md bg-white rounded-lg">
+    <thead class="bg-blue-600 text-white">
+      <tr>
+        <th class="border border-gray-300 px-4 py-2">Nombre</th>
+        <th class="border border-gray-300 px-4 py-2">Edad</th>
+        <th class="border border-gray-300 px-4 py-2">Enfermedades</th>
+        <th class="border border-gray-300 px-4 py-2">Medicamentos</th>
+        <th class="border border-gray-300 px-4 py-2">Alergias</th>
+        <th class="border border-gray-300 px-4 py-2">Tipo de sangre</th>
+        <th class="border border-gray-300 px-4 py-2">Contacto emergencia</th>
+        <th class="border border-gray-300 px-4 py-2">Descripción</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in pacientes %}
+      <tr class="hover:bg-blue-50">
+        <td class="border border-gray-300 px-4 py-2">{{ p.nombre }}</td>
+        <td class="border border-gray-300 px-4 py-2">{{ p.edad }}</td>
+        <td class="border border-gray-300 px-4 py-2">{{ p.enfermedades }}</td>
+        <td class="border border-gray-300 px-4 py-2">{{ p.medicamentos }}</td>
+        <td class="border border-gray-300 px-4 py-2">{{ p.alergias }}</td>
+        <td class="border border-gray-300 px-4 py-2">{{ p.tipo_sangre }}</td>
+        <td class="border border-gray-300 px-4 py-2">{{ p.contacto_nombre }} - {{ p.contacto_tel }}</td>
+        <td class="border border-gray-300 px-4 py-2">{{ p.descripcion }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p class="text-gray-600">⚠️ No hay pacientes registrados todavía.</p>
+{% endif %}
+
+{% endblock %}
